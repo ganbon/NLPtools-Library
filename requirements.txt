@@ -1,0 +1,7 @@
+mecab-python3 
+jaconv
+matplotlib-base
+pytorch
+ipadic
+pandas
+scikit-learn
