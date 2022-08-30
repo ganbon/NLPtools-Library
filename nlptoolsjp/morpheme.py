@@ -43,7 +43,7 @@ def morpheme(input,kind = False,nelogd = False):
                 kind_list.append(kind_dict)
             node = node.next
         morpheme_dict = dict(zip(sentence,kind_list))
-        return morpheme_dict
+        return morpheme_dict,sentence
     else:
         sentence = wakati.parse(input).split()
     return sentence

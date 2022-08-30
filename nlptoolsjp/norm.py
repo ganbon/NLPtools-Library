@@ -6,13 +6,16 @@ def remove_str(text,remove_str='[!"#$%&\'\\\\()*+,-./:;<=>?@[\\]^_`{|}~「」〔
     return code_regex.sub('', text)
     
 def clean_text(text):
+    result = []
     if type(text) is list:
-        text = [re.sub(r'[\n \u3000]', '', i) for i in text]
-        text = [normalize('NFKC',t) for t in text]
+        for t in text:
+            t = re.sub(r'[\n \u3000]', '', t) 
+            t = normalize('NFKC',t)
+            result.append(t.lower())    
         return text
     else:
         text = re.sub(r'[\n \u3000]', '',text)
-        return normalize('NFKC',text)
+        return normalize('NFKC',text.lower())
 
 def japan_textline(text):
     result = ''
