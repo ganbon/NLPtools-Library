@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
-import requests
+import requests 
+from urllib.request import urlopen
 import time
 from nlptoolsjp.file_system import file_create
 
@@ -13,21 +14,31 @@ def scraping(url, file_path = None):
     text = '\n'.join(text_list)
     if file_path is not None:
         file_create(text,file_path)
-    time.sleep(1)
+    time.sleep(10)
     return text.split('\n')
 
-def scraping_obj(url):
-    responses = requests.get(url)
-    soup = BeautifulSoup(responses.text, 'html.parser')
-    return soup
-
-def scraping_url(url,class_name,file_path = None):
-    try:
+def scraping_obj(url,open=False):
+    if open:
+        responses = urlopen(url)
+        soup = BeautifulSoup(responses, 'html.parser')
+    else:
         responses = requests.get(url)
         soup = BeautifulSoup(responses.text, 'html.parser')
-    except:
-        return []
-    class_context = soup.find_all("a",class_=class_name)
+    time.sleep(10)
+    return soup
+
+def scraping_url(soup=None,url=None,class_name=None,file_path = None):
+    if soup is None:
+        try:
+            responses = requests.get(url)
+            soup = BeautifulSoup(responses.text, 'html.parser')
+            time.sleep(10)
+        except:
+            return []
+    if class_name is None:
+        class_context = soup.find_all("a")
+    else:
+        class_context = soup.find_all("a",class_=class_name)
     title_list = [con_text.text for con_text in class_context]
     url_list = [con_text.get("href") for con_text in class_context]
     if file_path is not None:

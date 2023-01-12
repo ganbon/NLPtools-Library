@@ -1,21 +1,31 @@
 from unicodedata import normalize
 import re
 
-def remove_str(text,remove_str='[!"#$%&\'\\\\()*+,-./:;<=>?@[\\]^_`{|}~「」〔〕“”〈〉『』【】＆＊・（）＄＃＠。、？！｀＋￥％]'):
+def remove_str(text,remove_str='[!"#$%&\'\\\\()*+,-./:;<=>?@꒳[\\]^_`{|}~「」〔〕“”〈〉『』【】＆＊・（）＄＃＠。、？！｀＋￥％∀;…]'):
     code_regex = re.compile(remove_str)
-    return code_regex.sub('', text)
+    if type(text) is str:
+        return code_regex.sub('', text)
+    elif type(text) is list:
+        return [code_regex.sub('', t) for t in text]
     
-def clean_text(text):
+def clean_text(text,norm_op=True):
     result = []
     if type(text) is list:
         for t in text:
-            t = re.sub(r'[\n \u3000]', '', t) 
-            t = normalize('NFKC',t)
-            result.append(t.lower())    
-        return text
+            try:
+                t = re.sub(r'[\n\t\u3000]', '', t).strip(" ")
+                if norm_op:
+                    t = normalize('NFKC',t)
+                result.append(t.lower())    
+            except:
+                # print(t)
+                result.append(t)
+                pass
     else:
-        text = re.sub(r'[\n \u3000]', '',text)
-        return normalize('NFKC',text.lower())
+        result = re.sub(r'[\n\t\u3000]', '',text).strip(" ")
+        if norm_op:
+            result = normalize('NFKC',text.lower())
+    return result
 
 def japan_textline(text):
     result = ''
