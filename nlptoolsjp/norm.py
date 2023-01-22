@@ -26,9 +26,9 @@ def remove_str(sentence,remove_str='[!"#$%&\'\\\\()*+,-./:;<=>?@꒳[\\]^_`{|}~�
     elif type(sentence) is list:
         return [code_regex.sub('', t) for t in sentence]
     
-def clean_sentence(sentence,norm_op=True):
+def clean_text(sentence,norm_op=True):
     """
-    改行、半角、\u3000を取り除く。
+    改行、半角等を取り除く。
     また、norm_opがTrueのときnormalizeで正規化を行う
 
     Parameters
@@ -68,5 +68,5 @@ def clean_sentence(sentence,norm_op=True):
 
 if __name__=='__main__':
     data = '　固い地べたの感触を顔面に味わい、\n\n彼は自分がうつ伏せに倒れたのだと気付いた。\n\n全身に力が入らず、手先の感覚はすでにない。\n\n\nただ、喉をかきむしりたくなるほどの熱が体の真ん中を支配している。'
-    clean_data = clean_sentence(data)
+    clean_data = clean_text(data)
     print(clean_data)
