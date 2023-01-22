@@ -1,0 +1,1 @@
+NEOLOGD_PATH = '-Owakati -d "C:/Program Files/MeCab/dic/ipadic" -u "C:/Program Files/MeCab/dic/NEologd/NEologd.dic"'

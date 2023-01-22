@@ -1,24 +1,50 @@
 import MeCab 
 import pykakasi
+from neologd_path import NEOLOGD_PATH
 
+def morpheme(sentence,kind = False,neologd=False):
+    """
+    MeCabを用いた形態素解析を行う。
 
-def morpheme(input,kind = False,nelogd = False):
-    if nelogd:
-        wakati = MeCab.Tagger('-Owakati -d "C:/Program Files/MeCab/dic/ipadic" -u "C:/Program Files/MeCab/dic/NEologd/NEologd.dic"')
+    Parameters
+    -----------
+    sentence : str
+        形態素解析対象の文字列
+    kind : bool (default=False)
+        Trueで形態素の品詞等をまとめた辞書を返す
+    neologd : bool (default=False)
+        TrueでNeologd辞書に変換する（辞書インストールが必要）
+
+    Returns
+    -----------
+    morpheme_list : list of str
+        分かち書きした結果を格納したリスト
+    morpheme_dict : dict 
+        keyに分割した形態素、valuesに対象の形態素の品詞、活用、基本形、読み方が
+        格納されている
+        
+    Notes
+    -----------
+    MeCabのインストールが必要
+    標準辞書はIPAの辞書を用いることを前提に作成している
+    Neologdの環境Pathをneologd_path.pyに記述して使用してください
+    """
+    if neologd:
+        wakati = MeCab.Tagger(NEOLOGD_PATH)
     else:
         wakati = MeCab.Tagger('-Owakati')
     kks = pykakasi.kakasi()
     if kind:
-        sentence = []
+        morpheme_list = []
         morpheme_dict = {}
-        node = wakati.parseToNode(input)
+        node = wakati.parseToNode(sentence)
         while node:
             word = node.surface
             if word!="":
-                sentence.append(word)
+                morpheme_list.append(word)
             kind_dict = {}
             node_list = node.feature.split(",")
-            if nelogd:
+            if neologd:
                 if node_list[1] == '数詞':
                     kind_dict = {
                         'speech': node_list[0],
@@ -53,10 +79,10 @@ def morpheme(input,kind = False,nelogd = False):
             if word not in morpheme_dict.keys():
                 morpheme_dict[word] = kind_dict
             node = node.next
-        return morpheme_dict,sentence
+        return morpheme_dict,morpheme_list
     else:
-        sentence = wakati.parse(input).split()
-        return sentence
+        morpheme_list = wakati.parse(sentence).split()
+        return morpheme_list
 
             
         
@@ -66,8 +92,8 @@ def main():
     a = morpheme(s)
     b = morpheme(s,kind = True)
     print()
-    c = morpheme(s,nelogd = True)
-    d = morpheme(s,kind = True,nelogd = True)
+    c = morpheme(s,neologd= True)
+    d = morpheme(s,kind = True,neologd= True)
     print(a)
     print(b)
     print(c)

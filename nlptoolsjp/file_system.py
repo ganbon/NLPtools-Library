@@ -5,6 +5,21 @@ import pickle
 
 
 def file_create(data,file_path,mode='w'):
+    """
+    .txt,.json,,.csv,.pkl形式のファイルを保存する
+    保存する形式は拡張子で判断している
+
+    Parameters
+    ----------
+    data: list or str or dict or @d.Dataframe
+        保存するデータ
+    file_path : str
+        保存先のファイルパス
+
+    Notes
+    --------
+    with open書くのがめんどくさいから作った
+    """
     if '.txt' in file_path or '.html' in file_path:
         with open(file_path,mode = mode,encoding = 'utf-8') as f:
             if type(data) is str:
@@ -28,6 +43,24 @@ def file_create(data,file_path,mode='w'):
     
 
 def file_load(file_path):
+    """
+    .txt,.json,,.csv,.pkl形式のファイルをロードする
+    csvファイルはpd.Dataframe形式でロードする
+
+    Parameters
+    ----------
+    file_path : str
+        保存先のファイルパス
+    
+    Returns
+    ---------
+    data : ロードした形式
+        ファイルをロードしたデータを返す
+
+    Notes
+    --------
+    with open書くのがめんどくさいから作った
+    """
     if '.json' in file_path:
         with open(file_path, mode = 'r', encoding="utf-8") as f:
            data = json.load(f) 
