@@ -1,6 +1,6 @@
 import MeCab 
 import pykakasi
-from neologd_path import NEOLOGD_PATH
+from nlptoolsjp.neologd_path import NEOLOGD_PATH
 
 def morpheme(sentence,kind = False,neologd=False):
     """
